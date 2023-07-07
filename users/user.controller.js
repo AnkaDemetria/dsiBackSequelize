@@ -1,14 +1,14 @@
 const express = require("express");
 const router = express.Router();
-const Joi = require("joi");
-const validateRequest = require("_middleware/validate-request");
+const Joi = require("joi");//permet de définir schémas :structure attendue des données,règles à appliquer.
+const validateRequest = require("_middleware/validate-request");//fction appelée pour valider requête en utilisant schéma
 const Role = require("_helpers/role");
 const userService = require("./user.service");
 const jwt = require("jsonwebtoken");
 const authenticateToken = require("_middleware/token");
 
 
-// routes
+// Définition des routes pour gérer les requêtes HTTP entrantes (avec leurs endpoints et URL)
 
 router.get("/", authenticateToken, getAll);
 router.get("/:id", authenticateToken, getById);
@@ -16,7 +16,7 @@ router.post("/", authenticateToken, createSchema, create);
 router.put("/:id", authenticateToken, updateSchema, update);
 router.delete("/:id", authenticateToken, _delete);
 
-// route functions
+// Fonctions de rappel pour chaque route en utilisant userService (fichier user.service.js)
 
 function getAll(req, res, next) {
   userService
@@ -53,7 +53,7 @@ function _delete(req, res, next) {
     .catch(next);
 }
 
-// schema functions
+// Fonctions des schémas de validation pour les routes create et update
 
 function createSchema(req, res, next) {
   const schema = Joi.object({
@@ -80,5 +80,5 @@ function updateSchema(req, res, next) {
   }).with("password", "confirmPassword");
   validateRequest(req, next, schema);
 }
-
+//Export de la fonction router pour utilisation dans d'autres fichiers
 module.exports = router;

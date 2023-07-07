@@ -1,6 +1,8 @@
+// Initialisation et import de modules
 const bcrypt = require("bcryptjs");
-const db = require("_helpers/db");
+const db = require("_helpers/db");//permet au module d'accéder au modèle de la base de données
 
+//Utilisation méthodes asynchrones
 async function getAll() {
   return await db.User.findAll();
 }
@@ -17,10 +19,11 @@ async function create(params) {
 
   const user = new db.User(params);
 
-  // hash password
+  // Hachage du password
   user.passwordHash = await bcrypt.hash(params.password, 10);
 
-  // save user
+  // Enregistrement de l'utilisateur dans la base de données
+  
   await user.save();
 }
 

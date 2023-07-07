@@ -1,3 +1,5 @@
+//capturer et gérer les erreurs qui se produisent pendant l'exécution d'une application Node.js
+
 function errorHandler(err, req, res, next) {
   switch (true) {
     case typeof err === "string":

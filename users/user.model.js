@@ -1,3 +1,4 @@
+//Import objet DataTypes du module Sequelize
 const { DataTypes } = require("sequelize");
 
 function model(sequelize) {
@@ -10,17 +11,19 @@ function model(sequelize) {
     role: { type: DataTypes.STRING, allowNull: false },
   };
 
+  //Définition des options du modèle utilisateur
   const options = {
-    defaultScope: {
-      // exclude password hash by default
+    defaultScope: {//définit les attributs à exclure par défaut
+      // exclu le password par defaut
       attributes: { exclude: ["passwordHash"] },
     },
-    scopes: {
-      // include hash with this scope
+    scopes: {//définit la portée pour les requêtes
+      // inclu hash dans la portée
       withHash: { attributes: {} },
     },
   };
 
+  //Utilisation de la méthode define() de l'objet sequelize (modèle "user" avec attributs et options)
   return sequelize.define("User", attributes, options);
 }
 

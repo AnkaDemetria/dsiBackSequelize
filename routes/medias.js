@@ -1,10 +1,14 @@
-const { db } = require("../server");
+// Initialisation de constantes et importation de modules 
+const { db } = require("../server");//Base de données
 const authenticateToken = require("_middleware/token");
-const bcrypt = require("bcrypt");
-const jwt = require("jsonwebtoken");
+const bcrypt = require("bcrypt");//permet hâchage du password
+const jwt = require("jsonwebtoken");//permet sécuriser authentification et autorisation
+
 
 
 const path = (app) => {
+
+  //Utilisation méthode get d'Express (récupération données) sur table medias BDD
   app.get("/medias", authenticateToken, (req, res) => {
     const q = "SELECT * FROM medias";
     db.query(q, (err, data) => {
@@ -12,6 +16,8 @@ const path = (app) => {
       return res.json(data);
     });
   });
+
+  //Utilisation méthode post d'Express (ajout de données)
   app.post("/medias", authenticateToken, (req, res) => {
     const reference_media = req.body.reference_media;
     const url = req.body.url;
@@ -36,6 +42,8 @@ const path = (app) => {
       }
     );
   });
+
+  //Utilisation méthode put d'Express (modification totale des données)
   app.put("/medias/:id", authenticateToken, (req, res) => {
     const { reference_media, url } = req.body;
     const id_medias = req.params.id;
@@ -52,6 +60,8 @@ const path = (app) => {
       }
     );
   });
+
+  //Utilisation méthode patch d'Express (modification partielle données=1 seul champ)
   app.patch("/medias/:id/:value", authenticateToken, (req, res) => {
     const id_medias = req.params.id;
     let value = {};
@@ -73,6 +83,8 @@ const path = (app) => {
       }
     });
   });
+
+  //Utilisation méthode delete d'Express (suppression données)
   app.delete("/medias/:id", authenticateToken, (req, res) => {
     const id = req.params.id;
     db.query("DELETE FROM medias WHERE id_medias = ?", [id], (err, results) => {

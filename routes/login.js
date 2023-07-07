@@ -1,12 +1,12 @@
+// Initialisation de constantes et importation de modules de NodeJS
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const { db } = require("../server");
 const authenticateToken = require("_middleware/token");
 
+const crypto = require("crypto");//permet le cryptage, le décryptage et le hachage sécurisé
 
-const crypto = require("crypto");
-
-// Génère une clé secrète sécurisée de 128 bits (16 octets)
+// Génèration d'une clé secrète sécurisée de 128 bits (16 octets)
 const generateSecretKey = () => {
   return crypto.randomBytes(16).toString("hex");
 };
@@ -38,6 +38,7 @@ const path = (app) => {
             } else if (result) {
               const token = jwt.sign({ email: email }, "secretKey",{ expiresIn: '2h' 
                  });
+                 //paramètres du token : payload (données à sécuriser) et clé secrète avec durée du token
               res.json({ token: token });
             } else {
               const message = `Le mot de passe est incorrect.`;

@@ -1,10 +1,12 @@
-const { db } = require("../server");
+// Initialisation de constantes et importation de modules 
+const { db } = require("../server");//Base de données
 const authenticateToken = require("_middleware/token");
-const bcrypt = require("bcrypt");
-const jwt = require("jsonwebtoken");
+const bcrypt = require("bcrypt");//permet hâchage du password
+const jwt = require("jsonwebtoken");//permet sécuriser authentification et autorisation
 
 
 const path = (app) => {
+  //Utilisation méthode get d'Express (récupération données) sur table articles BDD
   app.get("/articles", authenticateToken, (req, res) => {
     const q = "SELECT * FROM articles";
     db.query(q, (err, data) => {
@@ -12,6 +14,8 @@ const path = (app) => {
       return res.json(data);
     });
   });
+
+  //Utilisation méthode post d'Express (ajout de données)
   app.post("/articles", authenticateToken, (req, res) => {
     const titre = req.body.titre;
     const content = req.body.content;
@@ -59,6 +63,8 @@ const path = (app) => {
       }
     );
   });
+
+  //Utilisation méthode put d'Express (modification totale des données)
   app.put("/articles/:id", authenticateToken, (req, res) => {
     const { titre, content, date_publication, id_users, id_medias } = req.body;
     const id_articles = req.params.id;
@@ -75,6 +81,8 @@ const path = (app) => {
       }
     );
   });
+
+  //Utilisation méthode patch d'Express (modification partielle données=1 seul champ)
   app.patch("/articles/:id/:value", authenticateToken, (req, res) => {
     const id_articles = req.params.id;
     let value = {};
@@ -105,6 +113,8 @@ const path = (app) => {
       }
     });
   });
+
+  //Utilisation méthode delete d'Express (suppression données)
   app.delete("/articles/:id", authenticateToken, (req, res) => {
     const id = req.params.id;
     db.query(
