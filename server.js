@@ -25,7 +25,7 @@ https.createServer(options, app).listen(3004, () => {
   console.log('App is running ! Go to https://localhost:3004');
 });
 
-// Initialisation const app et Utilisation de la méthode use (d'Express)
+// Initialisation constante app et Utilisation de la méthode use (d'Express)
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -34,9 +34,11 @@ app.use(express.urlencoded({ extended: true }));
 app.use("/users", require("./users/user.controller"));
 app.use("/login", require("./routes/login"));
 
-// global error handler
+// Utilisation gestionnaire d'erreurs
 app.use(errorHandler);
 
+
+//création connexion à la base de données
 const db = mysql.createConnection({
   host: "localhost",
   user: "root",

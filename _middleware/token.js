@@ -9,7 +9,7 @@ function authenticateToken (req, res, next){
       if (err) {
         return res.status(403).json({ error: "Token invalide" });
       }
-      // Stockez les informations utilisateur dans la requête pour une utilisation ultérieure
+      // Stockage des informations utilisateur dans la requête pour une utilisation ultérieure
       req.user = user;
       next();
     });
