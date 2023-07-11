@@ -1,13 +1,13 @@
 const config = require("config.json");
 const mysql = require("mysql2/promise");
-const { Sequelize } = require("sequelize");
+const { Sequelize } = require("sequelize");//import objet sequelize du module sequelize
 
 module.exports = db = {};
 
-initialize();
+initialize();//appel de la fonction initialize appelée plus bas dans le code
 
 async function initialize() {
-  // create db if it doesn't already exist
+  // fonction asynchrone initialise la base de données en utilisant les paramètres extraits précédemment
   const { host, port, user, password, database } = config.database;
   const connection = await mysql.createConnection({
     host,
@@ -15,16 +15,18 @@ async function initialize() {
     user,
     password,
   });
+  //Exécution d'une requête SQL pour créer la base de données si elle n’existe pas déjà
   await connection.query(`CREATE DATABASE IF NOT EXISTS \`${database}\`;`);
 
-  // connect to db
+  // création d'une instance de l’objet Sequelize en utilisant les paramètres de connexion à la base de données.
   const sequelize = new Sequelize(database, user, password, {
     dialect: "mysql",
   });
 
-  // init models and add them to the exported db object
+  // Initialisation  du modèle utilisateur en utilisant l’instance de l’objet Sequelize et ajout à l’objet exporté db.
   db.User = require("../users/user.model")(sequelize);
 
-  // sync all models with database
+  // synchronisation de tous les modèles avec la base de données en utilisant la méthode .sync() de l’objet Sequelize.
+
   await sequelize.sync({ alter: true });
 }
